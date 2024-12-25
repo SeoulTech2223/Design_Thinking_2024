@@ -11,13 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.app_2223.ui.theme.CustomTheme
 
-class LoginActivity : ComponentActivity() {
+class ResetPasswordActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CustomTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(modifier = Modifier.padding(innerPadding))
+                    ResetPasswordScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -25,9 +25,9 @@ class LoginActivity : ComponentActivity() {
 }
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun ResetPasswordScreen(modifier: Modifier = Modifier) {
     Text(
-        text = "로그인 화면",
+        text = "비밀번호 재설정 화면",
         modifier = modifier
     )
 }
