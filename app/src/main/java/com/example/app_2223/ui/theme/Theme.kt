@@ -5,6 +5,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val LightColors = lightColorScheme(
     primary = PrimaryColor,
@@ -26,6 +27,15 @@ fun CustomTheme(
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) DarkColors else LightColors
+
+    // SystemUiController를 가져옴
+    val systemUiController = rememberSystemUiController()
+
+    // 상태바 색상 설정
+    systemUiController.setStatusBarColor(
+        color = Color.White, // 상태 바 색상
+        darkIcons = !darkTheme  // 상태 바 아이콘 밝기
+    )
 
     MaterialTheme(
         colorScheme = colors,

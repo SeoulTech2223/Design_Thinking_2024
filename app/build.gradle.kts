@@ -44,6 +44,8 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.3.1")
     implementation("androidx.compose.ui:ui:1.5.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.5.0")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.1-alpha")
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.graphics)
