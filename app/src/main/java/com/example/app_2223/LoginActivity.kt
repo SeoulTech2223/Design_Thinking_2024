@@ -28,7 +28,7 @@ class LoginActivity : ComponentActivity() {
 @Composable
 fun LoginScreen(modifier: Modifier = Modifier) {
     Text(
-        text = "로그인 화면",
+        text = "Login Page",
         modifier = modifier
     )
 }
