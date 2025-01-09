@@ -5,6 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,8 +20,9 @@ import com.example.app_2223.R
 import com.example.app_2223.ui.theme.SurfaceColor
 
 @Composable
-fun MyPageScreen() {
-    // 간단한 가상 사용자 정보 (실제로는 ViewModel/서버에서 받아올 수도 있음)
+fun MyPageScreen(
+    onNavigateToLikedFestivals: () -> Unit
+) {
     var userName by remember { mutableStateOf("홍길동") }
     var userEmail by remember { mutableStateOf("hong@example.com") }
 
@@ -35,9 +38,9 @@ fun MyPageScreen() {
                 .padding(vertical = 16.dp),
             contentAlignment = Alignment.Center
         ) {
-            // 동그란 프로필 이미지 (예시 아이콘 사용)
+            // 동그란 프로필 이미지 (임시 아이콘)
             Image(
-                painter = painterResource(id = R.drawable.ic_mypage), // 실제 프로필 이미지 리소스나 URL 사용
+                painter = painterResource(id = R.drawable.ic_mypage),
                 contentDescription = "프로필 이미지",
                 modifier = Modifier
                     .size(80.dp)
@@ -59,15 +62,16 @@ fun MyPageScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 간단한 버튼들 (로그아웃, 설정 등)
-        Button(
-            onClick = { /* TODO: 로그아웃 로직 */ },
+        // 내가 좋아요 누른 축제 목록 보기 버튼
+        OutlinedButton(
+            onClick = onNavigateToLikedFestivals,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
+            border = BorderStroke(1.dp, Color.Gray)
         ) {
-            Text(text = "로그아웃")
+            Text(text = "내가 좋아요 누른 축제 목록")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -80,12 +84,24 @@ fun MyPageScreen() {
             shape = RoundedCornerShape(8.dp),
             border = BorderStroke(1.dp, Color.Gray)
         ) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "설정",
+                modifier = Modifier.padding(end = 4.dp)
+            )
             Text(text = "설정")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 다른 항목들 (예: 알림 설정, 개인정보 수정 등) 원하는 만큼 추가
-        // ...
+        Button(
+            onClick = { /* TODO: 로그아웃 로직 */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text(text = "로그아웃")
+        }
     }
 }
