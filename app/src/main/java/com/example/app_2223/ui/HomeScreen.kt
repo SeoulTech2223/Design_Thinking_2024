@@ -12,18 +12,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.app_2223.data.Festival
 import com.example.app_2223.data.sampleFestivalList
 import com.example.app_2223.ui.theme.SurfaceColor
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    likeStates: MutableMap<String, Pair<Boolean, Int>>,
+    onFestivalCardClick: (Festival) -> Unit
+) {
     var searchQuery by remember { mutableStateOf("") }
 
     // 초기 1회 랜덤 섞기 -> 고정
-    // (화면 Recomposition되어도 리스트 순서 유지)
     val randomFestivals = remember { sampleFestivalList.shuffled() }
 
-    // 검색어가 비어있으면 전체 리스트, 아니면 필터된 리스트
+    // 검색어 필터
     val filteredFestivals = if (searchQuery.isBlank()) {
         randomFestivals
     } else {
@@ -52,7 +55,7 @@ fun HomeScreen() {
                 .padding(horizontal = 16.dp)
         )
 
-        // 축제 목록 (필터 적용)
+        // 축제 목록
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -66,7 +69,8 @@ fun HomeScreen() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
-                    elevation = CardDefaults.cardElevation(2.dp)
+                    elevation = CardDefaults.cardElevation(2.dp),
+                    onClick = { onFestivalCardClick(festival) }
                 ) {
                     Row(
                         modifier = Modifier
@@ -82,7 +86,6 @@ fun HomeScreen() {
                                 .padding(end = 16.dp),
                             tint = Color.Unspecified
                         )
-
                         Column {
                             Text(
                                 text = festival.name,

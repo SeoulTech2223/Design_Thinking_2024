@@ -17,37 +17,29 @@ import com.example.app_2223.data.Festival
 import com.example.app_2223.data.sampleFestivalList
 import com.example.app_2223.ui.theme.SecondaryColor
 
-/**
- * 주제별 화면
- * 1) 축제 이름에서 '주제' 키워드를 추출
- * 2) 주제 목록을 선택하면 해당 주제의 축제 목록 표시
- */
 @Composable
-fun SubjectScreen() {
-    // 축제 리스트 전부 불러오기
+fun SubjectScreen(
+    likeStates: MutableMap<String, Pair<Boolean, Int>>,
+    onFestivalCardClick: (Festival) -> Unit
+) {
     val allFestivals = sampleFestivalList
 
-    // 축제 이름에서 'Xxx 축제' 형태의 '주제'를 추출하는 함수
+    // 주제 추출 함수
     fun extractSubject(festival: Festival): String {
-        // festival.name 예: "봄꽃 축제 1", "가을 단풍 축제 2" 등
-        // 여기서는 "축제"라는 단어 앞부분까지만 추출
-        // ex) "봄꽃 축제 1" -> "봄꽃 축제"
-        // 간단히 substringBefore("축제") + "축제"로 만들거나, 좀 더 정교하게 처리 가능
         val base = festival.name.substringBefore("축제").trim()
         return if (base.isNotEmpty()) base + "축제" else festival.name
     }
 
-    // 주제 리스트 추출
+    // 주제 목록
     val subjectList = remember {
         allFestivals
             .map { extractSubject(it) }
-            .distinct() // 중복 주제 제거
+            .distinct()
             .sorted()
     }
 
     var selectedSubject by remember { mutableStateOf<String?>(null) }
 
-    // 선택된 주제에 해당하는 축제 리스트
     val subjectFestivals = allFestivals.filter {
         selectedSubject != null && extractSubject(it) == selectedSubject
     }
@@ -63,23 +55,33 @@ fun SubjectScreen() {
         LazyColumn(modifier = Modifier.weight(1f)) {
             itemsIndexed(subjectList) { _, subject ->
                 Card(
+                    shape = RoundedCornerShape(8.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    border = BorderStroke(1.dp, Color(0xFFDDDDDD)),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    elevation = CardDefaults.cardElevation(2.dp),
                     onClick = {
                         selectedSubject = subject
                     }
                 ) {
-                    Text(
-                        text = subject,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(16.dp)
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = subject,
+                            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp)
+                        )
+                    }
                 }
             }
         }
 
-        // 선택된 주제의 축제 목록 표시
+
+        // 선택된 주제의 축제 목록
         if (selectedSubject != null) {
             Text(
                 text = "[$selectedSubject] 주제의 축제 목록",
@@ -95,7 +97,8 @@ fun SubjectScreen() {
                         border = BorderStroke(1.dp, Color(0xFFDDDDDD)),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .padding(horizontal = 16.dp, vertical = 4.dp),
+                        onClick = { onFestivalCardClick(festival) }
                     ) {
                         Row(
                             modifier = Modifier
